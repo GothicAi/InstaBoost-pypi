@@ -13,11 +13,11 @@ setup(
       'numpy',
       'opencv-python',
       'scipy',
+      'Cython',
       'pycocotools',
       'matplotlib',
       'Pillow',
       'scikit-image',
-      'opencv-mat',
-      'Cython'
+      'opencv-mat'
     ]
 )
