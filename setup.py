@@ -16,6 +16,7 @@ setup(
       'pycocotools',
       'matplotlib',
       'Pillow',
-      'scikit-image'
+      'scikit-image',
+      'opencv-mat'
     ]
 )
