@@ -1,16 +1,20 @@
 # InstaBoost
 
-A python implementation for paper: "**InstaBoost: Boosting Instance Segmentation Via Probability Map Guided Copy-Pasting**"
+A python implementation for paper: "**InstaBoost: Boosting Instance Segmentation Via Probability Map Guided Copy-Pasting**". The code has been released on PyPI for easier installation and implementation. 
 
 ## Install
 
-**pip install InstaBoost**
+```
+pip install InstaBoost
+```
 
-Only test on python3
+Only tested on python3 and Linux. Windows is not supported since pycocotools do not support Windows. 
 
 ## Get Started
 
 There are two main interface in **InstaBoost**.
+
+### **InstaBoostConfig**
 
 ```
 cfg = InstaBoostConfig(action_candidate: tuple,
@@ -22,6 +26,8 @@ cfg = InstaBoostConfig(action_candidate: tuple,
                        color_prob: float, 
                        heatmap_flag: bool)
 ```
+Parameters: 
+
 **action_candidate:** tuple of action candidates. 'normal', 'horizontal', 'vertical', 'skip' are supported
 
 **action_prob:** tuple of corresponding action probabilities. Should be the same length as action_candidate
@@ -38,17 +44,34 @@ cfg = InstaBoostConfig(action_candidate: tuple,
 
 **heatmap_flag:** whether to use heatmap guided
 
+Output:
+
+**cfg:** a InstaBoostConfig instance
+
+### **get_new_data**
+
 ```
 new_ann, new_img = get_new_data(ori_anns: list, 
                                 ori_img: np.ndarray, 
                                 config: InstaBoostConfig, 
                                 background: np.ndarray)
 ```
+Parameters: 
 
 **ori_anns:** list of coco-style annotation dicts
 
-**ori_img:** images corresponding to ori_anns
+**ori_img:** image corresponding to ori_anns
 
 **config:** a InstaBoostConfig instance. If None, the default parameters will be used
 
 **background:** if not None, this background image will be used for augmentation
+
+Output:
+
+**new_ann:** ori_anns after augmentation without changes in length of list or keys of dicts
+
+**new_img:** ori_img after augmentation without changes in shape
+
+## Samples and models
+
+We show how to implement our method on two main segmentation frameworks: [Detectron](https://github.com/roytseng-tw/Detectron.pytorch) and [mmdetection](https://github.com/open-mmlab/mmdetection) in repo [InstaBoost-sample](https://github.com/GothicAi/Instaboost). Results and models trained with InstaBoost are available in the [Model zoo](MODEL_ZOO.md).
