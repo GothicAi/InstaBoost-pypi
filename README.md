@@ -74,4 +74,4 @@ Output:
 
 ## Samples and models
 
-We show how to implement our method on two main segmentation frameworks: [Detectron](https://github.com/roytseng-tw/Detectron.pytorch) and [mmdetection](https://github.com/open-mmlab/mmdetection) in repo [InstaBoost-sample](https://github.com/GothicAi/Instaboost). Results and models trained with InstaBoost are available in the [Model zoo](MODEL_ZOO.md).
+We show how to implement our method on two main segmentation frameworks: [Detectron](https://github.com/roytseng-tw/Detectron.pytorch) and [mmdetection](https://github.com/open-mmlab/mmdetection) in repo [InstaBoost-sample](https://github.com/GothicAi/Instaboost). Results and models trained with InstaBoost are available in the [Model zoo](https://github.com/GothicAi/Instaboost/blob/master/MODEL_ZOO.md).
