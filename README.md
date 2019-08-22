@@ -62,7 +62,7 @@ Parameters:
 
 **ori_img:** image corresponding to ori_anns
 
-**config:** a InstaBoostConfig instance. If None, the default parameters will be used
+**config:** a InstaBoostConfig instance. **If None, the default parameters will be used**
 
 **background:** if not None, this background image will be used for augmentation
 
@@ -74,4 +74,4 @@ Output:
 
 ## Samples and models
 
-We show how to implement our method on two main segmentation frameworks: [Detectron](https://github.com/roytseng-tw/Detectron.pytorch) and [mmdetection](https://github.com/open-mmlab/mmdetection) in repo [InstaBoost-sample](https://github.com/GothicAi/Instaboost). Results and models trained with InstaBoost are available in the [Model zoo](https://github.com/GothicAi/Instaboost/blob/master/MODEL_ZOO.md).
+We show how to implement our method on two main segmentation frameworks: Detectron and mmdetection in repo [InstaBoost](https://github.com/GothicAi/Instaboost). Results and models trained with InstaBoost are available in the [Model zoo](https://github.com/GothicAi/Instaboost/blob/master/MODEL_ZOO.md).
