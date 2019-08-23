@@ -5,7 +5,7 @@ A python implementation for paper: "**InstaBoost: Boosting Instance Segmentation
 ## Install
 
 ```
-pip install InstaBoost
+pip install instaboost
 ```
 
 Only tested on python3 and Linux. Windows is not supported since pycocotools do not support Windows. 

@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 setup(
-    name='InstaBoost',
+    name='instaboost',
     version='0.1',
     description='a python implementation for paper: "InstaBoost: Boosting Instance Segmentation Via Probability Map GuidedCopy-Pasting"',
     author='Haoshu Fang, Jianhua Sun, Runzhong Wang,  Minghao Gou, Yonglu Li, Cewu Lu',
