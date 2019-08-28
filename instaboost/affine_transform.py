@@ -69,6 +69,42 @@ def __transform_img(img, trans_param, new_shape, order=3):
     return np.asfortranarray(canvas)
 
 
+def __transform_kp(keypoints, trans_param, group_bnd, new_shape):
+    height, width = new_shape
+    xmin, ymin, xmax, ymax = group_bnd
+
+    s = trans_param['s']
+    theta = trans_param['theta']
+    tx = trans_param['tx'] - (xmin + xmax) / 2
+    ty = trans_param['ty'] - (ymin + ymax) / 2
+
+    H = np.array([[s * np.cos(theta), - s * np.sin(theta), tx],
+                  [s * np.sin(theta), s * np.cos(theta), ty],
+                  [0, 0, 1]])
+    offset = [(xmin + xmax) / 2, (ymin + ymax) / 2, 0]
+
+    numpy_kps = np.array(keypoints).reshape(-1, 3)
+    new_kps = np.zeros_like(numpy_kps)
+
+    if 'flip' in trans_param:
+        if trans_param['flip'] == 'horizontal':
+            new_kps[:, 0] = width - new_kps[:, 0] - 1
+        elif trans_param['flip'] == 'vertical':
+            new_kps[:, 1] = height - new_kps[:, 1] - 1
+
+    for i in range(numpy_kps.shape[0]):
+        kp = numpy_kps[i]
+        vis_flag = kp[2]
+        if vis_flag > 0:
+            kp[2] = 1
+            new_kps[i] = np.dot(H, kp - offset) + offset
+            new_kps[i, 2] = vis_flag
+
+    new_kps = new_kps.reshape(-1).tolist()
+
+    return new_kps
+
+
 def transform_image(bkg_img: np.ndarray, inst_imgs: list, trans_params: list):
     canvas_h, canvas_w = bkg_img.shape[0:2]
     for inst_img, trans_param in zip(inst_imgs, trans_params):
@@ -93,6 +129,9 @@ def transform_annotation(anns: list, trans_params: list, group_bnds: list, group
             ann = anns[idx]
             xmin, ymin, xmax, ymax = group_bnd
             segm = ann['segmentation']
+            keypoints = ann['keypoints']
+            new_keypoints = __transform_kp(
+                keypoints, trans_param, group_bnd, (height, width))
             if type(segm) == list:
                 # polygon
                 inst_mask = cocoseg_to_binary(segm, height, width)
@@ -130,6 +169,7 @@ def transform_annotation(anns: list, trans_params: list, group_bnds: list, group
                 raise ValueError('You should not input json containing RLE annotations!')
 
             ann['segmentation'] = new_segm
+            ann['keypoints'] = new_keypoints
             ann['bbox'] = bbox
             ret_anns.append(ann)
 
