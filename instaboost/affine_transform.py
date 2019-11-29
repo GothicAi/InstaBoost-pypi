@@ -129,9 +129,6 @@ def transform_annotation(anns: list, trans_params: list, group_bnds: list, group
             ann = anns[idx]
             xmin, ymin, xmax, ymax = group_bnd
             segm = ann['segmentation']
-            keypoints = ann['keypoints']
-            new_keypoints = __transform_kp(
-                keypoints, trans_param, group_bnd, (height, width))
             if type(segm) == list:
                 # polygon
                 inst_mask = cocoseg_to_binary(segm, height, width)
@@ -167,9 +164,14 @@ def transform_annotation(anns: list, trans_params: list, group_bnds: list, group
             else:
                 # coco-style RLE -- error
                 raise ValueError('You should not input json containing RLE annotations!')
+            
+            if 'keypoints' in ann.keys():
+                keypoints = ann['keypoints']
+                new_keypoints = __transform_kp(
+                    keypoints, trans_param, group_bnd, (height, width))
+                ann['keypoints'] = new_keypoints
 
             ann['segmentation'] = new_segm
-            ann['keypoints'] = new_keypoints
             ann['bbox'] = bbox
             ret_anns.append(ann)
 
