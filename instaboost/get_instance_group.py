@@ -27,8 +27,7 @@ def cocoseg_to_binary(seg, height, width):
         rle = cocomask.frPyObjects(seg, height, width)
         mask = cocomask.decode([rle])
     else:
-        rle = cocomask.merge(seg)
-        mask = cocomask.decode([rle])
+        mask = cocomask.decode([seg])
     assert mask.shape[2] == 1
     return mask[:, :, 0]
 
