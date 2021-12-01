@@ -162,9 +162,23 @@ def transform_annotation(anns: list, trans_params: list, group_bnds: list, group
                 new_segm = binary_mask_to_rle(new_inst_mask)
                 bbox = cocomask.toBbox(rle).tolist()
             else:
-                # coco-style RLE -- error
-                raise ValueError('You should not input json containing RLE annotations!')
-            
+                # coco-syle RLE
+                inst_mask = cocomask.decode(segm)
+                inst_mask = inst_mask[ymin:ymax, xmin:xmax]
+                if 'flip' in trans_param:
+                    if trans_param['flip'] == 'horizontal':
+                        inst_mask = inst_mask[:, ::-1]
+                    elif trans_param['flip'] == 'vertical':
+                        inst_mask = inst_mask[::-1, :]
+                    else:
+                        raise ValueError('Unknown flip parameter {}'.format(trans_param['flip']))
+                # nearest interpolation
+                new_inst_mask = __transform_img(inst_mask, trans_param, (height, width), order=0)
+
+                rle = cocomask.encode(new_inst_mask)
+                new_segm = rle
+                bbox = cocomask.toBbox(rle).tolist()
+ 
             if 'keypoints' in ann.keys():
                 keypoints = ann['keypoints']
                 new_keypoints = __transform_kp(
